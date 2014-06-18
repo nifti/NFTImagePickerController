@@ -1,11 +1,15 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '7.0'
+platform :ios, '7.0'
 
-target "Demo" do
+xcodeproj 'NFTImagePickerController Demo'
+workspace '../NFTImagePickerController'
+inhibit_all_warnings!
+
+target "NFTImagePickerController Demo" do
   pod "NFTImagePickerController", :path => "../"
 end
 
-# Uncomment the following lines to add testing dependencies
+# Uncommnt the following lines to add testing dependencies
 # target "DemoTests" do
 #   pod 'Expecta'
 # end

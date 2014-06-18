@@ -1,0 +1,14 @@
+PODS:
+  - NFTImagePickerController (0.1.0)
+
+DEPENDENCIES:
+  - NFTImagePickerController (from `../`)
+
+EXTERNAL SOURCES:
+  NFTImagePickerController:
+    :path: ../
+
+SPEC CHECKSUMS:
+  NFTImagePickerController: b1d84151bc018edc22f5cd5c91946cc33a385672
+
+COCOAPODS: 0.33.1
