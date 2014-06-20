@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Nifti. All rights reserved.
 //
 
-#import "NFTAppDelegate.h"
+#import "AppDelegate.h"
 #import "NFTImagePickerController.h"
 #import "ViewController.h"
 
-@implementation NFTAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

@@ -14,11 +14,11 @@
 		C4988643195243A6000E2805 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4988642195243A6000E2805 /* UIKit.framework */; };
 		C4988649195243A6000E2805 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C4988647195243A6000E2805 /* InfoPlist.strings */; };
 		C498864B195243A6000E2805 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C498864A195243A6000E2805 /* main.m */; };
-		C498864F195243A6000E2805 /* NFTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C498864E195243A6000E2805 /* NFTAppDelegate.m */; };
 		C4988651195243A6000E2805 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4988650195243A6000E2805 /* Images.xcassets */; };
 		C4988658195243A7000E2805 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4988657195243A7000E2805 /* XCTest.framework */; };
 		C4988659195243A7000E2805 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C498863E195243A6000E2805 /* Foundation.framework */; };
 		C498865A195243A7000E2805 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4988642195243A6000E2805 /* UIKit.framework */; };
+		C4E856A41954DF0F00A588F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E856A31954DF0F00A588F9 /* AppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,11 +44,11 @@
 		C4988648195243A6000E2805 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C498864A195243A6000E2805 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C498864C195243A6000E2805 /* NFTImagePickerController Demo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NFTImagePickerController Demo-Prefix.pch"; sourceTree = "<group>"; };
-		C498864D195243A6000E2805 /* NFTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NFTAppDelegate.h; sourceTree = "<group>"; };
-		C498864E195243A6000E2805 /* NFTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NFTAppDelegate.m; sourceTree = "<group>"; };
 		C4988650195243A6000E2805 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C4988656195243A7000E2805 /* NFTImagePickerController DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NFTImagePickerController DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4988657195243A7000E2805 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C4E856A21954DF0F00A588F9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C4E856A31954DF0F00A588F9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,10 +110,10 @@
 		C4988644195243A6000E2805 /* NFTImagePickerController Demo */ = {
 			isa = PBXGroup;
 			children = (
-				C498864D195243A6000E2805 /* NFTAppDelegate.h */,
-				C498864E195243A6000E2805 /* NFTAppDelegate.m */,
-				C4988650195243A6000E2805 /* Images.xcassets */,
 				C4988645195243A6000E2805 /* Supporting Files */,
+				C4E856A21954DF0F00A588F9 /* AppDelegate.h */,
+				C4E856A31954DF0F00A588F9 /* AppDelegate.m */,
+				C4988650195243A6000E2805 /* Images.xcassets */,
 				2FF6889C756ADF552EE3851E /* ViewController.m */,
 				2FF685DAF0393BFE3A3EF4F2 /* ViewController.h */,
 			);
@@ -261,8 +261,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4E856A41954DF0F00A588F9 /* AppDelegate.m in Sources */,
 				C498864B195243A6000E2805 /* main.m in Sources */,
-				C498864F195243A6000E2805 /* NFTAppDelegate.m in Sources */,
 				2FF68E57C7DF4ECBFEB31088 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
