@@ -219,6 +219,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
             }
         } failureBlock:^(NSError *error) {
             NSLog(@"Error: %@", [error localizedDescription]);
+            [weakSelf showDeniedView];
         }];
     }
 }
