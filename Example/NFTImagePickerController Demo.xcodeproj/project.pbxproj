@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FF68E57C7DF4ECBFEB31088 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FF6889C756ADF552EE3851E /* ViewController.m */; };
 		57C90218BCEF49FAAFC8BB99 /* libPods-NFTImagePickerController Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5456160E494955A8E89459 /* libPods-NFTImagePickerController Demo.a */; };
 		C498863F195243A6000E2805 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C498863E195243A6000E2805 /* Foundation.framework */; };
 		C4988641195243A6000E2805 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4988640195243A6000E2805 /* CoreGraphics.framework */; };
@@ -31,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2FF685DAF0393BFE3A3EF4F2 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		2FF6889C756ADF552EE3851E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		7C5456160E494955A8E89459 /* libPods-NFTImagePickerController Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NFTImagePickerController Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99533E6AF9704BA7BFC57607 /* Pods-NFTImagePickerController Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NFTImagePickerController Demo.xcconfig"; path = "Pods/Pods-NFTImagePickerController Demo.xcconfig"; sourceTree = "<group>"; };
 		C498863B195243A6000E2805 /* NFTImagePickerController Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NFTImagePickerController Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +114,8 @@
 				C498864E195243A6000E2805 /* NFTAppDelegate.m */,
 				C4988650195243A6000E2805 /* Images.xcassets */,
 				C4988645195243A6000E2805 /* Supporting Files */,
+				2FF6889C756ADF552EE3851E /* ViewController.m */,
+				2FF685DAF0393BFE3A3EF4F2 /* ViewController.h */,
 			);
 			path = "NFTImagePickerController Demo";
 			sourceTree = "<group>";
@@ -258,6 +263,7 @@
 			files = (
 				C498864B195243A6000E2805 /* main.m in Sources */,
 				C498864F195243A6000E2805 /* NFTAppDelegate.m in Sources */,
+				2FF68E57C7DF4ECBFEB31088 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

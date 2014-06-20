@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   #s.resources = 'Assets/*.png'
   #s.ios.exclude_files = 'Classes/osx'
   #s.osx.exclude_files = 'Classes/ios'
-  # s.public_header_files = 'Classes/**/*.h'
+   s.public_header_files = 'NFTImagePickerController/**/*.h'
 
   # s.frameworks = 'SomeFramework', 'AnotherFramework'
   # s.dependency 'JSONKit', '~> 1.4'

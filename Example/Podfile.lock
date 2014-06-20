@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  NFTImagePickerController: b1d84151bc018edc22f5cd5c91946cc33a385672
+  NFTImagePickerController: 7a72bd5c9dfa8ef1d70f7276dfbf50b8484d5a33
 
 COCOAPODS: 0.33.1

@@ -7,6 +7,8 @@
 //
 
 #import "NFTAppDelegate.h"
+#import "NFTImagePickerController.h"
+#import "ViewController.h"
 
 @implementation NFTAppDelegate
 
@@ -15,6 +17,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    UIViewController *ctrl = [ViewController new];
+
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
