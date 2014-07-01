@@ -47,6 +47,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 @property(nonatomic, strong) NFTPhotoAccessDeniedView *photoAccessDeniedView;
 
+@property(nonatomic, assign) BOOL firstLoad;
+
 - (void)showDeniedView;
 
 - (void)hideDeniedView;
@@ -63,6 +65,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     if (self) {
         self.photoPermissionMessage = @"Enable Photo Access?";
         self.filterType = NFTImagePickerControllerFilterTypePhotos;
+        self.firstLoad = YES;
     }
     return self;
 }
@@ -100,6 +103,17 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         NSLog(@"unknown");
     }
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    ALAssetsGroup *assetsGroup = [self.assetsGroups firstObject];
+    if([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized && self.firstLoad && assetsGroup) {
+        self.firstLoad = NO;
+        [self displayAssetGroupViewController:assetsGroup animated:NO];
+    }
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -288,11 +302,14 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) indexPath.row];
+    [self displayAssetGroupViewController:assetsGroup animated:YES];
+}
 
+- (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated {
     NFTAssetsGroupViewController *ctrl = [NFTAssetsGroupViewController controllerWithAssetsGroup:assetsGroup];
 
     ctrl.delegate = self;
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [self.navigationController pushViewController:ctrl animated:animated];
 }
 
 #pragma mark - NFTAssetsGroupViewControllerDelegate
