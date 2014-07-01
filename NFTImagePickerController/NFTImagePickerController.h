@@ -30,4 +30,6 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 @property(nonatomic, assign) NFTImagePickerControllerFilterType filterType;
 @property(nonatomic, weak) id <NFTImagePickerControllerDelegate> delegate;
 
++ (BOOL)isAuthorized;
+
 @end

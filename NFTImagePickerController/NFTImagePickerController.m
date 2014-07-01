@@ -54,6 +54,10 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 @implementation NFTImagePickerController
 
++ (BOOL)isAuthorized {
+    return [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized;
+}
+
 - (id)init {
     self = [super init];
     if (self) {

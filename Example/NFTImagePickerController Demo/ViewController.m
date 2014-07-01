@@ -26,6 +26,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    if([NFTImagePickerController isAuthorized]) {
+        NSLog(@"Photo access accessible");
+    } else {
+        NSLog(@"Photo access currently not accessible");
+    }
+
     self.imagePickerButton.frame = CGRectMake(0, 40, CGRectGetWidth(self.view.bounds), 44.0f);
 }
 
