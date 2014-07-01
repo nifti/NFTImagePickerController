@@ -48,6 +48,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 @property(nonatomic, strong) NFTPhotoAccessDeniedView *photoAccessDeniedView;
 
 @property(nonatomic, assign) BOOL firstLoad;
+@property(nonatomic, assign) BOOL viewDidAppear;
 
 - (void)showDeniedView;
 
@@ -66,6 +67,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         self.photoPermissionMessage = @"Enable Photo Access?";
         self.filterType = NFTImagePickerControllerFilterTypePhotos;
         self.firstLoad = YES;
+        self.viewDidAppear = NO;
     }
     return self;
 }
@@ -107,8 +109,9 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
+    self.viewDidAppear = YES;
     ALAssetsGroup *assetsGroup = [self.assetsGroups firstObject];
-    if([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized && self.firstLoad && assetsGroup) {
+    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized && self.firstLoad && assetsGroup) {
         self.firstLoad = NO;
         [self displayAssetGroupViewController:assetsGroup animated:NO];
     }
@@ -198,7 +201,14 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     [self loadAssetsGroupsWithTypes:self.groupTypes
                          completion:^(NSArray *assetsGroups) {
         self.assetsGroups = assetsGroups;
-        [self.collectionView reloadData];
+
+        if (self.viewDidAppear && self.firstLoad) {
+            ALAssetsGroup *assetsGroup = [assetsGroups firstObject];
+            self.firstLoad = NO;
+            [self displayAssetGroupViewController:assetsGroup animated:NO];
+        } else if (!self.firstLoad) {
+            [self.collectionView reloadData];
+        }
     }];
 }
 
