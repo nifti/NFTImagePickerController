@@ -83,7 +83,7 @@ static const int itemSpacing = 2;
         _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _collectionViewFlowLayout.minimumLineSpacing = itemSpacing;
         _collectionViewFlowLayout.minimumInteritemSpacing = itemSpacing;
-        _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0);
+        _collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
     }
 
     return _collectionViewFlowLayout;
