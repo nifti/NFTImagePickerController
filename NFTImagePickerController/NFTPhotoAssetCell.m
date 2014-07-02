@@ -50,18 +50,21 @@
 
     // Show/hide overlay view
     if (selected) {
-//        [self hideCheckmarkView];
         [self showCheckmarkView];
+        self.layer.borderWidth = 2.0;
+        self.layer.borderColor = [UIColor colorWithRed:57/255.0 green:187/255.0 blue:181/255.0 alpha:1].CGColor;
     } else {
         [self hideCheckmarkView];
+        self.layer.borderWidth = 0;
+        self.layer.borderColor = [UIColor clearColor].CGColor;
     }
 }
 
 - (void)showCheckmarkView {
     if (![self isDescendantOfView:self.checkmarkView]) {
         CGFloat w = 24, h = w;
-        CGFloat x = CGRectGetWidth(self.bounds) - w - 2;
-        CGFloat y = CGRectGetHeight(self.bounds) - h - 2;
+        CGFloat x = CGRectGetWidth(self.bounds) - w - 3;
+        CGFloat y = CGRectGetHeight(self.bounds) - h - 3;
         self.checkmarkView.frame = CGRectMake(x, y, w, h);
         [self.contentView addSubview:self.checkmarkView];
     }

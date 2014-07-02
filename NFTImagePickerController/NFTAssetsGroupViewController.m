@@ -7,7 +7,7 @@
 
 #define kNFTPhotoAssetsViewCellId @"_nft.id.photoAssetViewCellId"
 
-static const int itemSpacing = 2;
+static const int itemSpacing = 4;
 
 @interface NFTAssetsGroupViewController ()
 
@@ -135,7 +135,7 @@ static const int itemSpacing = 2;
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(78.5, 80);
+    return CGSizeMake(104, 104);
 }
 
 #pragma mark - UICollectionViewDelegate

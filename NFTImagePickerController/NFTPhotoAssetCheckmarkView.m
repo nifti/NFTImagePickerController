@@ -26,11 +26,11 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     // Border
-    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
-    CGContextFillEllipseInRect(context, self.bounds);
+//    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+//    CGContextFillEllipseInRect(context, self.bounds);
 
     // Body
-    CGContextSetRGBFillColor(context, 20.0 / 255.0, 111.0 / 255.0, 223.0 / 255.0, 1.0);
+    CGContextSetRGBFillColor(context, 57 / 255.0, 187 / 255.0, 181 / 255.0, 1.0);
     CGContextFillEllipseInRect(context, CGRectInset(self.bounds, 1.0, 1.0));
 
     // Checkmark
