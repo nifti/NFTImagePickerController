@@ -26,6 +26,8 @@
 
 + (instancetype)controllerWithAssetsGroup:(ALAssetsGroup *)assetsGroup;
 
+- (void)deselectAsset:(ALAsset *)asset;
+
 @property (nonatomic, weak) id<NFTAssetsGroupViewControllerDelegate> delegate;
 
 @end

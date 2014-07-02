@@ -156,4 +156,11 @@ static const int itemSpacing = 4;
     }
 }
 
+- (void)deselectAsset:(ALAsset *)asset {
+    if([self.assets containsObject:asset]) {
+        NSUInteger idx = [self.assets indexOfObject:asset];
+        NSIndexPath *path = [NSIndexPath indexPathForItem:idx inSection:0];
+        [self.collectionView deselectItemAtIndexPath:path animated:YES];
+    }
+}
 @end

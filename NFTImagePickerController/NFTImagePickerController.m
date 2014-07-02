@@ -47,6 +47,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 @property(nonatomic, strong) NFTPhotoAccessDeniedView *photoAccessDeniedView;
 
+@property(nonatomic, strong) NFTAssetsGroupViewController *assetsGroupViewController;
+
 @property(nonatomic, assign) BOOL firstLoad;
 @property(nonatomic, assign) BOOL viewDidAppear;
 
@@ -284,6 +286,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return [sortedAssetsGroups copy];
 }
 
+- (void)deselectAsset:(ALAsset *)asset {
+    if(self.assetsGroupViewController) {
+        [self.assetsGroupViewController deselectAsset:asset];
+    }
+}
+
 #pragma mark - Collection View delegates
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -316,10 +324,10 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated {
-    NFTAssetsGroupViewController *ctrl = [NFTAssetsGroupViewController controllerWithAssetsGroup:assetsGroup];
+    self.assetsGroupViewController = [NFTAssetsGroupViewController controllerWithAssetsGroup:assetsGroup];
 
-    ctrl.delegate = self;
-    [self.navigationController pushViewController:ctrl animated:animated];
+    self.assetsGroupViewController.delegate = self;
+    [self.navigationController pushViewController:self.assetsGroupViewController animated:animated];
 }
 
 #pragma mark - NFTAssetsGroupViewControllerDelegate
