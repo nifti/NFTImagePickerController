@@ -54,6 +54,7 @@ static const int itemSpacing = 4;
 //    }];
 
     self.collectionView.frame = self.view.bounds;
+    [self reloadAssets];
 }
 
 #pragma mark - Lazy init
@@ -93,8 +94,6 @@ static const int itemSpacing = 4;
     _assetsGroup = assetsGroup;
 
     self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
-
-    [self reloadAssets];
 }
 
 - (void)reloadAssets {
