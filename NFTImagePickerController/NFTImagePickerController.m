@@ -172,8 +172,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     self.title = @"Permissions";
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(camerarollAccessDeniedViewForImagePickerController:)]) {
-        self.currentPhotoAccessDeniedView = [self.delegate camerarollAccessDeniedViewForImagePickerController:self];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:viewForCameraRollAccesDeniedReusingView:)]) {
+        self.currentPhotoAccessDeniedView = [self.delegate imagePickerController:self viewForCameraRollAccesDeniedReusingView:self.currentPhotoAccessDeniedView];
     } else {
         self.currentPhotoAccessDeniedView = self.genericPhotoAccessDeniedView;
     }
@@ -295,7 +295,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)deselectAsset:(ALAsset *)asset {
-    if(self.assetsGroupViewController) {
+    if (self.assetsGroupViewController) {
         [self.assetsGroupViewController deselectAsset:asset];
     }
 }
