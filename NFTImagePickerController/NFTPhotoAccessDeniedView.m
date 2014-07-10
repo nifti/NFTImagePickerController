@@ -58,7 +58,8 @@
 - (UILabel *)stepsView {
     if (!_stepsView) {
         _stepsView = [UILabel new];
-        _stepsView.text = @"1. Open Settings\n2. Tap Privacy > Photos\n3. Set \"Nifti\" to ON";
+        NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        _stepsView.text = [NSString stringWithFormat:@"1. Open Settings\n2. Tap Privacy > Photos\n3. Set \"%@\" to ON", appName];
         _stepsView.font = [UIFont fontWithName:@"HelveticaNeue" size:16.0f];
         _stepsView.textAlignment = NSTextAlignmentLeft;
         _stepsView.numberOfLines = 0;

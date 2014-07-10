@@ -45,7 +45,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 @property(nonatomic, strong) UICollectionView *collectionView;
 @property(nonatomic, strong) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property(nonatomic, strong) NFTPhotoAccessDeniedView *photoAccessDeniedView;
+@property(nonatomic, strong) NFTPhotoAccessDeniedView *genericPhotoAccessDeniedView;
+@property(nonatomic, strong) UIView *currentPhotoAccessDeniedView;
 
 @property(nonatomic, strong) NFTAssetsGroupViewController *assetsGroupViewController;
 
@@ -157,12 +158,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return _collectionViewFlowLayout;
 }
 
-- (NFTPhotoAccessDeniedView *)photoAccessDeniedView {
-    if (!_photoAccessDeniedView) {
-        _photoAccessDeniedView = [NFTPhotoAccessDeniedView new];
+- (NFTPhotoAccessDeniedView *)genericPhotoAccessDeniedView {
+    if (!_genericPhotoAccessDeniedView) {
+        _genericPhotoAccessDeniedView = [NFTPhotoAccessDeniedView new];
     }
 
-    return _photoAccessDeniedView;
+    return _genericPhotoAccessDeniedView;
 }
 
 
@@ -170,12 +171,19 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     [self.collectionView removeFromSuperview];
 
     self.title = @"Permissions";
-    self.photoAccessDeniedView.frame = self.view.bounds;
-    [self.view addSubview:self.photoAccessDeniedView];
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(camerarollAccessDeniedViewForImagePickerController:)]) {
+        self.currentPhotoAccessDeniedView = [self.delegate camerarollAccessDeniedViewForImagePickerController:self];
+    } else {
+        self.currentPhotoAccessDeniedView = self.genericPhotoAccessDeniedView;
+    }
+
+    self.currentPhotoAccessDeniedView.frame = self.view.bounds;
+    [self.view addSubview:self.currentPhotoAccessDeniedView];
 }
 
 - (void)hideDeniedView {
-    [self.photoAccessDeniedView removeFromSuperview];
+    [self.currentPhotoAccessDeniedView removeFromSuperview];
     self.title = @"Albums";
 }
 
