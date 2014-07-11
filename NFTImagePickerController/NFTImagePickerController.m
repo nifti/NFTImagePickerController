@@ -12,6 +12,8 @@
 
 #define kNFTAssetsGroupCellId @"_nft.id.assetsGroupCellId"
 
+static const int itemSpacing = 4;
+
 ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePickerControllerFilterType type) {
     switch (type) {
         case NFTImagePickerControllerFilterTypeNone:
@@ -52,10 +54,15 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 @property(nonatomic, assign) BOOL firstLoad;
 @property(nonatomic, assign) BOOL viewDidAppear;
+@property(nonatomic, strong, readwrite) NSSet *selectedAssetURLs;
 
 - (void)showDeniedView;
 
 - (void)hideDeniedView;
+
+- (void)selectedAssetURLsAddAsset:(ALAsset *)asset;
+
+- (void)selectedAssetURLsRemoveAsset:(ALAsset *)asset;
 @end
 
 @implementation NFTImagePickerController
@@ -71,6 +78,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         self.filterType = NFTImagePickerControllerFilterTypePhotos;
         self.firstLoad = YES;
         self.viewDidAppear = NO;
+
+        self.selectedAssetURLs = [NSSet set];
     }
     return self;
 }
@@ -295,6 +304,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)deselectAsset:(ALAsset *)asset {
+    [self selectedAssetURLsRemoveAsset:asset];
+
     if (self.assetsGroupViewController) {
         [self.assetsGroupViewController deselectAsset:asset];
     }
@@ -332,24 +343,58 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated {
-    self.assetsGroupViewController = [NFTAssetsGroupViewController controllerWithAssetsGroup:assetsGroup];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    layout.minimumLineSpacing = itemSpacing;
+    layout.minimumInteritemSpacing = itemSpacing;
+    layout.sectionInset = UIEdgeInsetsZero;
 
+    self.assetsGroupViewController = [[NFTAssetsGroupViewController alloc] initWithCollectionViewLayout:layout];
+
+    self.assetsGroupViewController.assetsGroup = assetsGroup;
     self.assetsGroupViewController.delegate = self;
+
+    for (NSURL *assetURL in self.selectedAssetURLs) {
+        [self.assetsGroupViewController selectAssetHavingURL:assetURL];
+    }
+
     [self.navigationController pushViewController:self.assetsGroupViewController animated:animated];
 }
 
 #pragma mark - NFTAssetsGroupViewControllerDelegate
 
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSelectAsset:(ALAsset *)asset {
+    [self selectedAssetURLsAddAsset:asset];
+
     if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didSelectAsset:)]) {
         [self.delegate imagePickerController:self didSelectAsset:asset];
     }
 }
 
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didDeselectAsset:(ALAsset *)asset {
+    [self selectedAssetURLsRemoveAsset:asset];
+
     if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didDeselectAsset:)]) {
         [self.delegate imagePickerController:self didDeselectAsset:asset];
     }
+}
+
+#pragma mark - Private Methods
+
+- (void)selectedAssetURLsAddAsset:(ALAsset *)asset {
+    NSMutableSet *mset = [self.selectedAssetURLs mutableCopy];
+    NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
+    [mset addObject:assetURL];
+
+    self.selectedAssetURLs = mset;
+}
+
+- (void)selectedAssetURLsRemoveAsset:(ALAsset *)asset {
+    NSMutableSet *mset = [self.selectedAssetURLs mutableCopy];
+    NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
+    [mset removeObject:assetURL];
+
+    self.selectedAssetURLs = mset;
 }
 
 @end

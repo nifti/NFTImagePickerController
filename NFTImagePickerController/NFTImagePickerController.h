@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 
 @interface NFTImagePickerController : UIViewController
 
+@property (nonatomic, strong, readonly) NSSet *selectedAssetURLs;
 @property(nonatomic, strong) NSString *photoPermissionMessage;
 @property(nonatomic, assign) NFTImagePickerControllerFilterType filterType;
 @property(nonatomic, weak) id <NFTImagePickerControllerDelegate> delegate;

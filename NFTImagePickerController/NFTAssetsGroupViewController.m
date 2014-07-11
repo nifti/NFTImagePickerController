@@ -11,10 +11,6 @@ static const int itemSpacing = 4;
 
 @interface NFTAssetsGroupViewController ()
 
-@property(nonatomic, strong) ALAssetsGroup *assetsGroup;
-@property(nonatomic, strong) UICollectionView *collectionView;
-@property(nonatomic, strong) UICollectionViewFlowLayout *collectionViewFlowLayout;
-
 @property(nonatomic, strong) NSMutableArray *assets;
 
 - (void)reloadAssets;
@@ -22,78 +18,39 @@ static const int itemSpacing = 4;
 
 @implementation NFTAssetsGroupViewController
 
-- (instancetype)initWithAssetsGroup:(ALAssetsGroup *)assetsGroup {
-    self = [super init];
+- (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
+    self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.assetsGroup = assetsGroup;
+        self.collectionView.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
+        self.collectionView.allowsMultipleSelection = YES;
+        self.collectionView.clipsToBounds = YES;
+        self.collectionView.delegate = self;
+        self.collectionView.dataSource = self;
+        self.collectionView.showsVerticalScrollIndicator = NO;
+
+        [self.collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:kNFTPhotoAssetsViewCellId];
     }
 
     return self;
 }
 
-+ (instancetype)controllerWithAssetsGroup:(ALAssetsGroup *)assetsGroup {
-    return [[self alloc] initWithAssetsGroup:assetsGroup];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [self.view addSubview:self.collectionView];
-
     self.view.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-//    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:1];
-//
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{
-//            NSForegroundColorAttributeName : [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:1],
-//            NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f]
-//    }];
-
-    self.collectionView.frame = self.view.bounds;
-    [self reloadAssets];
 }
 
 #pragma mark - Lazy init
-
-- (UICollectionView *)collectionView {
-
-    if (!_collectionView) {
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame
-                                             collectionViewLayout:self.collectionViewFlowLayout];
-
-        _collectionView.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
-        _collectionView.allowsMultipleSelection = YES;
-        _collectionView.clipsToBounds = YES;
-        _collectionView.delegate = self;
-        _collectionView.dataSource = self;
-        _collectionView.showsVerticalScrollIndicator = NO;
-
-        [_collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:kNFTPhotoAssetsViewCellId];
-    }
-
-    return _collectionView;
-}
-
-- (UICollectionViewFlowLayout *)collectionViewFlowLayout {
-    if (_collectionViewFlowLayout == nil) {
-        _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-        _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-        _collectionViewFlowLayout.minimumLineSpacing = itemSpacing;
-        _collectionViewFlowLayout.minimumInteritemSpacing = itemSpacing;
-        _collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
-    }
-
-    return _collectionViewFlowLayout;
-}
 
 - (void)setAssetsGroup:(ALAssetsGroup *)assetsGroup {
     _assetsGroup = assetsGroup;
 
     self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
+
+    [self reloadAssets];
 }
 
 - (void)reloadAssets {
@@ -156,10 +113,31 @@ static const int itemSpacing = 4;
 }
 
 - (void)deselectAsset:(ALAsset *)asset {
-    if([self.assets containsObject:asset]) {
-        NSUInteger idx = [self.assets indexOfObject:asset];
-        NSIndexPath *path = [NSIndexPath indexPathForItem:idx inSection:0];
-        [self.collectionView deselectItemAtIndexPath:path animated:YES];
+    for (NSInteger i = 0; i < self.assets.count; i++) {
+        NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
+
+        if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
+        }
     }
 }
+
+
+#pragma mark - Asset Selection
+
+- (void)selectAssetHavingURL:(NSURL *)URL {
+    for (NSInteger i = 0; i < self.assets.count; i++) {
+        ALAsset *asset = [self.assets objectAtIndex:i];
+        NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
+
+        if ([assetURL isEqual:URL]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+
+            return;
+        }
+    }
+}
+
 @end

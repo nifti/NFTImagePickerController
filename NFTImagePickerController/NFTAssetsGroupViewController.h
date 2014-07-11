@@ -16,18 +16,15 @@
 
 @end
 
-@interface NFTAssetsGroupViewController : UIViewController<
+@interface NFTAssetsGroupViewController : UICollectionViewController<
         UIAlertViewDelegate,
-        UICollectionViewDelegate,
-        UICollectionViewDataSource,
         UICollectionViewDelegateFlowLayout>
-
-- (instancetype)initWithAssetsGroup:(ALAssetsGroup *)assetsGroup;
-
-+ (instancetype)controllerWithAssetsGroup:(ALAssetsGroup *)assetsGroup;
 
 - (void)deselectAsset:(ALAsset *)asset;
 
+- (void)selectAssetHavingURL:(NSURL *)URL;
+
+@property(nonatomic, strong) ALAssetsGroup *assetsGroup;
 @property (nonatomic, weak) id<NFTAssetsGroupViewControllerDelegate> delegate;
 
 @end
