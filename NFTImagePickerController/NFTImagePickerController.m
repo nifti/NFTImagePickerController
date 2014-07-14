@@ -197,11 +197,13 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)showAskForPermissionDialog {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photo Access"
+    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Let %@ Access Photos?", appName]
                                                     message:self.photoPermissionMessage
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Allow", nil];
+                                          cancelButtonTitle:@"Not Now"
+                                          otherButtonTitles:@"Give Access", nil];
     [alert show];
 }
 
