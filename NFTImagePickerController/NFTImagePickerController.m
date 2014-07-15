@@ -9,8 +9,7 @@
 #import "NFTImagePickerGroupCell.h"
 #import "NFTAssetsGroupViewController.h"
 #import "NFTPhotoAccessDeniedView.h"
-
-#define kNFTAssetsGroupCellId @"_nft.id.assetsGroupCellId"
+#import "NFTNoPhotosFoundCell.h"
 
 static const int itemSpacing = 4;
 
@@ -149,7 +148,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
 
-        [_collectionView registerClass:[NFTImagePickerGroupCell class] forCellWithReuseIdentifier:kNFTAssetsGroupCellId];
+        [_collectionView registerClass:[NFTImagePickerGroupCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTImagePickerGroupCell class])];
+        [_collectionView registerClass:[NFTNoPhotosFoundCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class])];
     }
 
     return _collectionView;
@@ -226,8 +226,15 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         if (self.viewDidAppear && self.firstLoad) {
             ALAssetsGroup *assetsGroup = [assetsGroups firstObject];
             self.firstLoad = NO;
-            [self displayAssetGroupViewController:assetsGroup animated:NO];
+            if (assetsGroup) {
+                [self displayAssetGroupViewController:assetsGroup animated:NO];
+            } else {
+                [self.collectionView reloadData];
+            }
         } else if (!self.firstLoad) {
+            [self.collectionView reloadData];
+        } else if (self.assetsGroups.count == 0) {
+            self.firstLoad = NO;
             [self.collectionView reloadData];
         }
     }];
@@ -320,23 +327,41 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(CGRectGetWidth(self.view.bounds), 50);
+    if ([self showNoPhotosFound]) {
+        return CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+    } else {
+        return CGSizeMake(CGRectGetWidth(self.view.bounds), 50);
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.assetsGroups.count;
+    if ([self showNoPhotosFound]) {
+        return 1;
+    } else {
+        return self.assetsGroups.count;
+    }
+}
+
+- (BOOL)showNoPhotosFound {
+    return !self.firstLoad && self.assetsGroups.count == 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)aCollectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NFTImagePickerGroupCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:kNFTAssetsGroupCellId forIndexPath:indexPath];
+    if ([self showNoPhotosFound]) {
+        NFTNoPhotosFoundCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class]) forIndexPath:indexPath];
+        return cell;
+    } else {
+        NFTImagePickerGroupCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([NFTImagePickerGroupCell class]) forIndexPath:indexPath];
 
-    ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) indexPath.row];
+        ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) indexPath.row];
 
-    cell.selectedBackgroundView = [[UIView alloc] init];
-    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:0.3];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:0.3];
 
-    [cell updateAssetsGroup:assetsGroup];
-    return cell;
+        [cell updateAssetsGroup:assetsGroup];
+        return cell;
+    }
+
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

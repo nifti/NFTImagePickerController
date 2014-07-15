@@ -4,8 +4,7 @@
 
 #import "NFTAssetsGroupViewController.h"
 #import "NFTPhotoAssetCell.h"
-
-#define kNFTPhotoAssetsViewCellId @"_nft.id.photoAssetViewCellId"
+#import "NFTNoPhotosFoundCell.h"
 
 static const int itemSpacing = 4;
 
@@ -28,7 +27,8 @@ static const int itemSpacing = 4;
         self.collectionView.dataSource = self;
         self.collectionView.showsVerticalScrollIndicator = NO;
 
-        [self.collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:kNFTPhotoAssetsViewCellId];
+        [self.collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTPhotoAssetCell class])];
+        [self.collectionView registerClass:[NFTNoPhotosFoundCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class])];
     }
 
     return self;
@@ -75,17 +75,30 @@ static const int itemSpacing = 4;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.assetsGroup.numberOfAssets;
+    if ([self showNoPhotosFound]) {
+        return 1;
+    } else {
+        return self.assetsGroup.numberOfAssets;
+    }
+}
+
+- (BOOL)showNoPhotosFound {
+    return self.assetsGroup.numberOfAssets == 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NFTPhotoAssetCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kNFTPhotoAssetsViewCellId forIndexPath:indexPath];
+    if ([self showNoPhotosFound]) {
+        NFTNoPhotosFoundCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class]) forIndexPath:indexPath];
+        return cell;
+    } else {
+        NFTPhotoAssetCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([NFTPhotoAssetCell class]) forIndexPath:indexPath];
 
-    ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+        ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
 
-    [cell updateWithAsset:asset];
+        [cell updateWithAsset:asset];
 
-    return cell;
+        return cell;
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
