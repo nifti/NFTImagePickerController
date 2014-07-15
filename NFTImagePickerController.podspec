@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.name             = "NFTImagePickerController"
   s.version          = "0.1.0"
   s.summary          = "A UIImagePickerController with multiple selection support."
-  s.homepage         = "http://EXAMPLE/NAME"
-  s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/nifti/NFTImagePickerController"
+  #s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "Ryan Fitzgerald" => "ryan.fitz1@gmail.com" }
   s.source           = { :git => "http://github.com/nifti/NFTImagePickerController.git", :tag => s.version.to_s }
