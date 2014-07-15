@@ -6,8 +6,6 @@
 #import "NFTPhotoAssetCell.h"
 #import "NFTNoPhotosFoundCell.h"
 
-static const int itemSpacing = 4;
-
 @interface NFTAssetsGroupViewController ()
 
 @property(nonatomic, strong) NSMutableArray *assets;
