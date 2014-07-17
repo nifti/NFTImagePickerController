@@ -101,10 +101,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{
-//            NSForegroundColorAttributeName : [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:1],
-//            NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f]
-//    }];
+    self.collectionView.frame = self.view.bounds;
 
     if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusNotDetermined) {
         [self showAskForPermissionDialog];
