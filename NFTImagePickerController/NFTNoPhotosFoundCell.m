@@ -59,7 +59,7 @@
     [super layoutSubviews];
 
     CGFloat x = 0, w = CGRectGetWidth(self.bounds), h = 22;
-    CGFloat y = (CGRectGetWidth(self.contentView.bounds) / 2) - h;
+    CGFloat y = (CGRectGetHeight(self.contentView.bounds) / 2) - (h * 2);
     self.titleLabel.frame = CGRectMake(x, y, w, h);
 
     y += h + 10;
