@@ -27,6 +27,9 @@
 
         [self.collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTPhotoAssetCell class])];
         [self.collectionView registerClass:[NFTNoPhotosFoundCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class])];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAssets)
+                                                     name:ALAssetsLibraryChangedNotification object:nil];
     }
 
     return self;
@@ -37,8 +40,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:ALAssetsLibraryChangedNotification object:nil];
 }
 
 #pragma mark - Lazy init
