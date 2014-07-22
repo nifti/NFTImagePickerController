@@ -9,6 +9,7 @@
 @interface NFTAssetsGroupViewController ()
 
 @property(nonatomic, strong) NSMutableArray *assets;
+@property(nonatomic, strong) NSMutableSet *assetURLs;
 
 - (void)reloadAssets;
 @end
@@ -28,7 +29,7 @@
         [self.collectionView registerClass:[NFTPhotoAssetCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTPhotoAssetCell class])];
         [self.collectionView registerClass:[NFTNoPhotosFoundCell class] forCellWithReuseIdentifier:NSStringFromClass([NFTNoPhotosFoundCell class])];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAssets)
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsChanged:)
                                                      name:ALAssetsLibraryChangedNotification object:nil];
     }
 
@@ -59,15 +60,62 @@
     [self.assetsGroup setAssetsFilter:[ALAssetsFilter allPhotos]];
 
     self.assets = [NSMutableArray array];
+    self.assetURLs = [NSMutableSet new];
 
     __weak typeof(self) weakSelf = self;
     [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
             [weakSelf.assets addObject:result];
+            [weakSelf.assetURLs addObject:[result valueForProperty:ALAssetPropertyAssetURL]];
         }
     }];
 
     [self.collectionView reloadData];
+}
+
+- (void)assetsChanged:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+
+    if (notification.userInfo == nil) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadAssets];
+        });
+    }
+
+    NSMutableOrderedSet *newItemSet = [NSMutableOrderedSet orderedSetWithSet:userInfo[ALAssetLibraryUpdatedAssetsKey]];
+    [newItemSet minusSet:self.assetURLs];
+
+    if (newItemSet.count > 0) {
+        __weak typeof(self) weakSelf = self;
+
+        NSMutableArray *indexPaths = [NSMutableArray new];
+
+        // TODO refactor to be easier to read & understand
+        [newItemSet enumerateObjectsUsingBlock:^(NSURL *url, NSUInteger idx, BOOL *stop) {
+            [self.assetsLibrary assetForURL:url resultBlock:^(ALAsset *asset) {
+                NSIndexPath *path = [NSIndexPath indexPathForItem:weakSelf.assets.count inSection:0];
+                [indexPaths addObject:path];
+                [weakSelf.assets addObject:asset];
+                [weakSelf.assetURLs addObject:[asset valueForProperty:ALAssetPropertyAssetURL]];
+
+                if (idx == newItemSet.count - 1) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.collectionView performBatchUpdates:^{
+                            [weakSelf.collectionView insertItemsAtIndexPaths:indexPaths];
+                        }
+                                                          completion:^(BOOL finished) {
+                        }];
+                    });
+                }
+            }                  failureBlock:^(NSError *error) {
+                NSLog(@"error %@", error.description);
+            }];
+        }];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadAssets];
+        });
+    }
 }
 
 #pragma mark - UICollectionViewDataSource

@@ -375,6 +375,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     self.assetsGroupViewController = [[NFTAssetsGroupViewController alloc] initWithCollectionViewLayout:layout];
 
+    self.assetsGroupViewController.assetsLibrary = self.assetsLibrary;
     self.assetsGroupViewController.assetsGroup = assetsGroup;
     self.assetsGroupViewController.delegate = self;
 

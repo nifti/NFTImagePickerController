@@ -25,6 +25,7 @@
 - (void)selectAssetHavingURL:(NSURL *)URL;
 
 @property(nonatomic, strong) ALAssetsGroup *assetsGroup;
+@property(nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, weak) id<NFTAssetsGroupViewControllerDelegate> delegate;
 
 @end
