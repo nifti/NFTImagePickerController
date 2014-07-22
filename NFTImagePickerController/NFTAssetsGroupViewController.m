@@ -76,7 +76,14 @@
 - (void)assetsChanged:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
 
-    if (notification.userInfo == nil) {
+    NSSet *groupURLs = userInfo[ALAssetLibraryUpdatedAssetGroupsKey];
+
+    // if changes didn't happen to current asset group ignore it
+    if (![groupURLs containsObject:[self.assetsGroup valueForProperty:ALAssetsGroupPropertyURL]]) {
+        return;
+    }
+
+    if (userInfo == nil) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self reloadAssets];
         });
