@@ -49,8 +49,6 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 @property(nonatomic, strong) NFTPhotoAccessDeniedView *genericPhotoAccessDeniedView;
 @property(nonatomic, strong) UIView *currentPhotoAccessDeniedView;
 
-@property(nonatomic, strong) NFTAssetsGroupViewController *assetsGroupViewController;
-
 @property(nonatomic, assign) BOOL firstLoad;
 @property(nonatomic, assign) BOOL viewDidAppear;
 @property(nonatomic, strong, readwrite) NSSet *selectedAssetURLs;
@@ -409,6 +407,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didDeselectAsset:)]) {
         [self.delegate imagePickerController:self didDeselectAsset:asset];
+    }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(NFTPhotoAssetCell *)cell image:(UIImage *)image {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didLongTouch:image:)]) {
+        [self.delegate imagePickerController:self didLongTouch:cell image:image];
     }
 }
 

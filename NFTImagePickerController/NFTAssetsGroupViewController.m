@@ -32,6 +32,11 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsChanged:)
                                                      name:ALAssetsLibraryChangedNotification object:nil];
+
+        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGestureRecognizer.minimumPressDuration = .3; //seconds
+        longPressGestureRecognizer.delaysTouchesBegan = YES;
+        [self.collectionView addGestureRecognizer:longPressGestureRecognizer];
     }
 
     return self;
@@ -271,6 +276,24 @@
             [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 
             return;
+        }
+    }
+}
+
+#pragma mark - Long press gesture action
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+        if (indexPath) {
+            ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+            UIImage *image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullResolutionImage];
+            NFTPhotoAssetCell *cell = (NFTPhotoAssetCell *) [self.collectionView cellForItemAtIndexPath:indexPath];
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didLongTouch:image:)]) {
+                [self.delegate assetsGroupViewController:self didLongTouch:cell image:image];
+            }
         }
     }
 }
