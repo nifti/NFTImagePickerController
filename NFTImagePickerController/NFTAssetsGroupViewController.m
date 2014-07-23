@@ -8,10 +8,11 @@
 
 @interface NFTAssetsGroupViewController ()
 
-@property(nonatomic, strong) NSMutableArray *assets;
-@property(nonatomic, strong) NSMutableSet *assetURLs;
+@property(nonatomic, strong) NSArray *assets;
+@property(nonatomic, strong) NSArray *assetURLs;
 
 - (void)reloadAssets;
+
 @end
 
 @implementation NFTAssetsGroupViewController
@@ -57,20 +58,19 @@
 }
 
 - (void)reloadAssets {
+    [self reloadAssetsAnimated:NO];
+}
+
+- (void)reloadAssetsAnimated:(BOOL)animated {
     [self.assetsGroup setAssetsFilter:[ALAssetsFilter allPhotos]];
-
-    self.assets = [NSMutableArray array];
-    self.assetURLs = [NSMutableSet new];
-
-    __weak typeof(self) weakSelf = self;
+    NSMutableArray *assets = [NSMutableArray new];
     [self.assetsGroup enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
-            [weakSelf.assets addObject:result];
-            [weakSelf.assetURLs addObject:[result valueForProperty:ALAssetPropertyAssetURL]];
+            [assets addObject:result];
         }
     }];
 
-    [self.collectionView reloadData];
+    [self setItems:assets animated:animated];
 }
 
 - (void)assetsChanged:(NSNotification *)notification {
@@ -83,46 +83,93 @@
         return;
     }
 
-    if (userInfo == nil) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadAssets];
-        });
+    [self reloadAssetsAnimated:YES];
+}
+
+- (NSArray *)assetURLsForAssets:(NSArray *)assets {
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:assets.count];
+
+    for (ALAsset *asset in assets) {
+        NSURL *url = [asset valueForProperty:ALAssetPropertyAssetURL];
+        if (url) {
+            [result addObject:url];
+        }
     }
 
-    NSMutableOrderedSet *newItemSet = [NSMutableOrderedSet orderedSetWithSet:userInfo[ALAssetLibraryUpdatedAssetsKey]];
-    [newItemSet minusSet:self.assetURLs];
+    return result;
+};
 
-    if (newItemSet.count > 0) {
-        __weak typeof(self) weakSelf = self;
+- (void)setItems:(NSArray *)items animated:(BOOL)animated {
+    if (_assets == items || [_assets isEqualToArray:items])
+        return;
 
-        NSMutableArray *indexPaths = [NSMutableArray new];
+    if (!animated) {
+        _assets = [items copy];
+        _assetURLs = [self assetURLsForAssets:_assets];
 
-        // TODO refactor to be easier to read & understand
-        [newItemSet enumerateObjectsUsingBlock:^(NSURL *url, NSUInteger idx, BOOL *stop) {
-            [self.assetsLibrary assetForURL:url resultBlock:^(ALAsset *asset) {
-                NSIndexPath *path = [NSIndexPath indexPathForItem:weakSelf.assets.count inSection:0];
-                [indexPaths addObject:path];
-                [weakSelf.assets addObject:asset];
-                [weakSelf.assetURLs addObject:[asset valueForProperty:ALAssetPropertyAssetURL]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
 
-                if (idx == newItemSet.count - 1) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf.collectionView performBatchUpdates:^{
-                            [weakSelf.collectionView insertItemsAtIndexPaths:indexPaths];
-                        }
-                                                          completion:^(BOOL finished) {
-                        }];
-                    });
+        return;
+    }
+
+    NSOrderedSet *oldItemSet = [NSOrderedSet orderedSetWithArray:self.assetURLs];
+    NSOrderedSet *newItemSet = [NSOrderedSet orderedSetWithArray:[self assetURLsForAssets:items]];
+
+    NSMutableOrderedSet *deletedItems = [oldItemSet mutableCopy];
+    [deletedItems minusOrderedSet:newItemSet];
+
+    NSMutableOrderedSet *newItems = [newItemSet mutableCopy];
+    [newItems minusOrderedSet:oldItemSet];
+
+    NSMutableOrderedSet *movedItems = [newItemSet mutableCopy];
+    [movedItems intersectOrderedSet:oldItemSet];
+
+    NSMutableArray *deletedIndexPaths = [NSMutableArray arrayWithCapacity:[deletedItems count]];
+    for (id deletedItem in deletedItems) {
+        [deletedIndexPaths addObject:[NSIndexPath indexPathForItem:[oldItemSet indexOfObject:deletedItem] inSection:0]];
+    }
+
+    NSMutableArray *insertedIndexPaths = [NSMutableArray arrayWithCapacity:[newItems count]];
+    for (id newItem in newItems) {
+        [insertedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:newItem] inSection:0]];
+    }
+
+    NSMutableArray *fromMovedIndexPaths = [NSMutableArray arrayWithCapacity:[movedItems count]];
+    NSMutableArray *toMovedIndexPaths = [NSMutableArray arrayWithCapacity:[movedItems count]];
+    for (id movedItem in movedItems) {
+        [fromMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[oldItemSet indexOfObject:movedItem] inSection:0]];
+        [toMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:movedItem] inSection:0]];
+    }
+
+    _assets = [items copy];
+    _assetURLs = [self assetURLsForAssets:_assets];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __weak typeof(&*self) weakself = self;
+        [self.collectionView performBatchUpdates:^() {
+
+            if ([deletedIndexPaths count]) {
+                [weakself.collectionView deleteItemsAtIndexPaths:deletedIndexPaths];
+            }
+
+            if ([insertedIndexPaths count]) {
+                [weakself.collectionView insertItemsAtIndexPaths:insertedIndexPaths];
+            }
+
+            NSUInteger count = [fromMovedIndexPaths count];
+            for (NSUInteger i = 0; i < count; ++i) {
+                NSIndexPath *fromIndexPath = fromMovedIndexPaths[i];
+                NSIndexPath *toIndexPath = toMovedIndexPaths[i];
+                if (fromIndexPath != nil && toIndexPath != nil) {
+                    [weakself.collectionView moveItemAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
                 }
-            }                  failureBlock:^(NSError *error) {
-                NSLog(@"error %@", error.description);
-            }];
+            }
+
+        }                             completion:^(BOOL finished) {
         }];
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadAssets];
-        });
-    }
+    });
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -135,12 +182,12 @@
     if ([self showNoPhotosFound]) {
         return 1;
     } else {
-        return self.assetsGroup.numberOfAssets;
+        return self.assets.count;
     }
 }
 
 - (BOOL)showNoPhotosFound {
-    return self.assetsGroup.numberOfAssets == 0;
+    return self.assets.count == 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
