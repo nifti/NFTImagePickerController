@@ -412,6 +412,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     }
 }
 
+- (void)assetsGroupViewControllerDidReloadAssets:(NFTAssetsGroupViewController *)assetsGroupViewController {
+    for (NSURL *assetURL in self.selectedAssetURLs) {
+        [assetsGroupViewController selectAssetHavingURL:assetURL];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)selectedAssetURLsAddAsset:(ALAsset *)asset {

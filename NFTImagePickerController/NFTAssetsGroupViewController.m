@@ -109,6 +109,7 @@
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView reloadData];
+            [self notifyAssetsReloaded];
         });
 
         return;
@@ -168,6 +169,7 @@
             }
 
         }                             completion:^(BOOL finished) {
+            [weakself notifyAssetsReloaded];
         }];
     });
 }
@@ -251,6 +253,11 @@
     }
 }
 
+- (void)notifyAssetsReloaded {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewControllerDidReloadAssets:)]) {
+        [self.delegate assetsGroupViewControllerDidReloadAssets:self];
+    }
+}
 
 #pragma mark - Asset Selection
 
