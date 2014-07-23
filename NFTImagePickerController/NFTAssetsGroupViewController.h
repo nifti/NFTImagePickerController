@@ -20,6 +20,8 @@
         UIAlertViewDelegate,
         UICollectionViewDelegateFlowLayout>
 
+- (void)selectAsset:(ALAsset *)asset;
+
 - (void)deselectAsset:(ALAsset *)asset;
 
 - (void)selectAssetHavingURL:(NSURL *)URL;

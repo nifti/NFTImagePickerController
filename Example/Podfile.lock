@@ -1,5 +1,5 @@
 PODS:
-  - NFTImagePickerController (0.1.0)
+  - NFTImagePickerController (0.1.6)
 
 DEPENDENCIES:
   - NFTImagePickerController (from `../`)
@@ -9,6 +9,6 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  NFTImagePickerController: 7a72bd5c9dfa8ef1d70f7276dfbf50b8484d5a33
+  NFTImagePickerController: ef996577de780a5f05f25bafbe7a91d2749eec11
 
 COCOAPODS: 0.33.1

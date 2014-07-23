@@ -229,6 +229,17 @@
     }
 }
 
+- (void)selectAsset:(ALAsset *)asset {
+    for (NSInteger i = 0; i < self.assets.count; i++) {
+        NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
+
+        if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        }
+    }
+}
+
 - (void)deselectAsset:(ALAsset *)asset {
     for (NSInteger i = 0; i < self.assets.count; i++) {
         NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];

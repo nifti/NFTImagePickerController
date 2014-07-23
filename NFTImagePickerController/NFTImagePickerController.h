@@ -36,5 +36,6 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 
 + (BOOL)isAuthorized;
 
+- (void)selectAsset:(ALAsset *)asset;
 - (void)deselectAsset:(ALAsset *)asset;
 @end

@@ -309,6 +309,14 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return [sortedAssetsGroups copy];
 }
 
+- (void)selectAsset:(ALAsset *)asset {
+    [self selectedAssetURLsAddAsset:asset];
+
+    if (self.assetsGroupViewController) {
+        [self.assetsGroupViewController selectAsset:asset];
+    }
+}
+
 - (void)deselectAsset:(ALAsset *)asset {
     [self selectedAssetURLsRemoveAsset:asset];
 
