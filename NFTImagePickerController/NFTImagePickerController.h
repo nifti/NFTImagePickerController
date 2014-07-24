@@ -10,6 +10,7 @@
 #import "NFTPhotoAssetCell.h"
 #import "NFTAssetsGroupViewController.h"
 
+
 @class NFTImagePickerController;
 
 typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
@@ -22,18 +23,15 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 
 @optional
 - (void)imagePickerController:(NFTImagePickerController *)imagePickerController didSelectAsset:(ALAsset *)asset;
-
 - (void)imagePickerController:(NFTImagePickerController *)imagePickerController didDeselectAsset:(ALAsset *)asset;
-
-- (void)imagePickerController:(NFTImagePickerController *)imagePickerController didLongTouch:(NFTPhotoAssetCell *)cell image:(UIImage *)image;
-
+- (void)imagePickerController:(NFTImagePickerController *)imagePickerController didLongTouch:(ALAsset *)asset inView:(UIView *)view;
 - (UIView *)imagePickerController:(NFTImagePickerController *)imagePickerController viewForCameraRollAccesDeniedReusingView:(UIView *)view;
 
 @end
 
 @interface NFTImagePickerController : UIViewController
 
-@property (nonatomic, strong, readonly) NSSet *selectedAssetURLs;
+@property(nonatomic, strong, readonly) NSSet *selectedAssetURLs;
 @property(nonatomic, strong) NSString *photoPermissionMessage;
 @property(nonatomic, assign) NFTImagePickerControllerFilterType filterType;
 @property(nonatomic, weak) id <NFTImagePickerControllerDelegate> delegate;
@@ -43,4 +41,5 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 
 - (void)selectAsset:(ALAsset *)asset;
 - (void)deselectAsset:(ALAsset *)asset;
+
 @end

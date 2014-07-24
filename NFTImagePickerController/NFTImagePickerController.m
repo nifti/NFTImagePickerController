@@ -7,7 +7,6 @@
 
 #import "NFTImagePickerController.h"
 #import "NFTImagePickerGroupCell.h"
-#import "NFTAssetsGroupViewController.h"
 #import "NFTPhotoAccessDeniedView.h"
 #import "NFTNoPhotosFoundCell.h"
 
@@ -93,7 +92,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     [self.view addSubview:self.collectionView];
 
-    self.view.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithRed:242.0f / 255.0f green:242.0f / 255.0f blue:242.0f / 255.0f alpha:1];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,7 +135,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame
                                              collectionViewLayout:self.collectionViewFlowLayout];
 
-        _collectionView.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
+        _collectionView.backgroundColor = [UIColor colorWithRed:242.0f / 255.0f green:242.0f / 255.0f blue:242.0f / 255.0f alpha:1];
         _collectionView.allowsMultipleSelection = NO;
         _collectionView.clipsToBounds = YES;
         _collectionView.delegate = self;
@@ -287,7 +286,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         ALAssetsGroupType assetsGroupType = [[assetsGroup valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue];
         NSUInteger indexOfAssetsGroupType = [typesOrder indexOfObject:@(assetsGroupType)];
 
-        for (NSInteger i = 0; i <= sortedAssetsGroups.count; i++) {
+        for (NSUInteger i = 0; i <= sortedAssetsGroups.count; i++) {
             if (i == sortedAssetsGroups.count) {
                 [sortedAssetsGroups addObject:assetsGroup];
                 break;
@@ -359,7 +358,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) indexPath.row];
 
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:0.3];
+        cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:137.0f / 255.0f green:153.0f / 255.0f blue:167.0f / 255.0f alpha:0.3];
 
         [cell updateAssetsGroup:assetsGroup];
         return cell;
@@ -410,9 +409,9 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     }
 }
 
-- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(NFTPhotoAssetCell *)cell image:(UIImage *)image {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didLongTouch:image:)]) {
-        [self.delegate imagePickerController:self didLongTouch:cell image:image];
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(ALAsset *)asset inView:(UIView *)cell {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didLongTouch:inView:)]) {
+        [self.delegate imagePickerController:self didLongTouch:asset inView:cell];
     }
 }
 
