@@ -6,6 +6,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
 
+
 @class NFTAssetsGroupViewController;
 
 @protocol NFTAssetsGroupViewControllerDelegate <NSObject>
@@ -13,6 +14,7 @@
 @optional
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSelectAsset:(ALAsset *)asset;
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didDeselectAsset:(ALAsset *)asset;
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(ALAsset *)asset inView:(UIView *)cell;
 - (void)assetsGroupViewControllerDidReloadAssets:(NFTAssetsGroupViewController *)assetsGroupViewController;
 
 @end
@@ -22,13 +24,11 @@
         UICollectionViewDelegateFlowLayout>
 
 - (void)selectAsset:(ALAsset *)asset;
-
 - (void)deselectAsset:(ALAsset *)asset;
-
 - (void)selectAssetHavingURL:(NSURL *)URL;
 
 @property(nonatomic, strong) ALAssetsGroup *assetsGroup;
 @property(nonatomic, strong) ALAssetsLibrary *assetsLibrary;
-@property (nonatomic, weak) id<NFTAssetsGroupViewControllerDelegate> delegate;
+@property(nonatomic, weak) id<NFTAssetsGroupViewControllerDelegate> delegate;
 
 @end

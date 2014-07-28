@@ -20,7 +20,7 @@
 - (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.collectionView.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
+        self.collectionView.backgroundColor = [UIColor colorWithRed:242.0f / 255.0f green:242.0f / 255.0f blue:242.0f / 255.0f alpha:1];
         self.collectionView.allowsMultipleSelection = YES;
         self.collectionView.clipsToBounds = YES;
         self.collectionView.delegate = self;
@@ -32,6 +32,11 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assetsChanged:)
                                                      name:ALAssetsLibraryChangedNotification object:nil];
+
+        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGestureRecognizer.minimumPressDuration = .3; //seconds
+        longPressGestureRecognizer.delaysTouchesBegan = YES;
+        [self.collectionView addGestureRecognizer:longPressGestureRecognizer];
     }
 
     return self;
@@ -39,7 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithRed:242.0f / 255.0f green:242.0f / 255.0f blue:242.0f / 255.0f alpha:1];
 }
 
 - (void)dealloc {
@@ -232,7 +237,7 @@
 }
 
 - (void)selectAsset:(ALAsset *)asset {
-    for (NSInteger i = 0; i < self.assets.count; i++) {
+    for (NSUInteger i = 0; i < self.assets.count; i++) {
         NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
 
         if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
@@ -243,7 +248,7 @@
 }
 
 - (void)deselectAsset:(ALAsset *)asset {
-    for (NSInteger i = 0; i < self.assets.count; i++) {
+    for (NSUInteger i = 0; i < self.assets.count; i++) {
         NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
 
         if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
@@ -262,7 +267,7 @@
 #pragma mark - Asset Selection
 
 - (void)selectAssetHavingURL:(NSURL *)URL {
-    for (NSInteger i = 0; i < self.assets.count; i++) {
+    for (NSUInteger i = 0; i < self.assets.count; i++) {
         ALAsset *asset = [self.assets objectAtIndex:i];
         NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
 
@@ -271,6 +276,23 @@
             [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
 
             return;
+        }
+    }
+}
+
+#pragma mark - Long press gesture action
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+        if (indexPath) {
+            ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+            NFTPhotoAssetCell *cell = (NFTPhotoAssetCell *) [self.collectionView cellForItemAtIndexPath:indexPath];
+
+            if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didLongTouch:inView:)]) {
+                [self.delegate assetsGroupViewController:self didLongTouch:asset inView:cell];
+            }
         }
     }
 }
