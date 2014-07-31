@@ -18,8 +18,8 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-//        self.backgroundColor = [UIColor colorWithRed:242 / 255.0 green:242 / 255.0 blue:242 / 255.0 alpha:1];
         [self.contentView addSubview:self.thumbnailImageView];
+        [self.contentView addSubview:self.checkmarkView];
     }
     return self;
 }
@@ -40,6 +40,7 @@
     if (!_checkmarkView) {
         _checkmarkView = [NFTPhotoAssetCheckmarkView new];
         _checkmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _checkmarkView.hidden = YES;
     }
 
     return _checkmarkView;
@@ -52,7 +53,7 @@
     if (selected) {
         [self showCheckmarkView];
         self.layer.borderWidth = 2.0;
-        self.layer.borderColor = [UIColor colorWithRed:57/255.0 green:187/255.0 blue:181/255.0 alpha:1].CGColor;
+        self.layer.borderColor = [UIColor colorWithRed:57 / 255.0 green:187 / 255.0 blue:181 / 255.0 alpha:1].CGColor;
     } else {
         [self hideCheckmarkView];
         self.layer.borderWidth = 0;
@@ -61,17 +62,11 @@
 }
 
 - (void)showCheckmarkView {
-    if (![self isDescendantOfView:self.checkmarkView]) {
-        CGFloat w = 24, h = w;
-        CGFloat x = CGRectGetWidth(self.bounds) - w - 3;
-        CGFloat y = CGRectGetHeight(self.bounds) - h - 3;
-        self.checkmarkView.frame = CGRectMake(x, y, w, h);
-        [self.contentView addSubview:self.checkmarkView];
-    }
+    self.checkmarkView.hidden = NO;
 }
 
 - (void)hideCheckmarkView {
-    [self.checkmarkView removeFromSuperview];
+    self.checkmarkView.hidden = YES;
 }
 
 #pragma mark - Layout
@@ -80,6 +75,12 @@
     [super layoutSubviews];
 
     self.thumbnailImageView.frame = self.bounds;
+
+    CGFloat w = 24, h = w;
+    CGFloat x = CGRectGetWidth(self.bounds) - w - 3;
+    CGFloat y = CGRectGetHeight(self.bounds) - h - 3;
+
+    self.checkmarkView.frame = CGRectMake(x, y, w, h);
 }
 
 - (void)updateWithAsset:(ALAsset *)asset {
