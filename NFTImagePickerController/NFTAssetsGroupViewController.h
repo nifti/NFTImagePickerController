@@ -25,7 +25,8 @@
 
 - (void)selectAsset:(ALAsset *)asset;
 - (void)deselectAsset:(ALAsset *)asset;
-- (void)selectAssetHavingURL:(NSURL *)URL;
+
+- (void)selectAssetsHavingURLs:(NSSet *)assetURLs;
 
 @property(nonatomic, strong) ALAssetsGroup *assetsGroup;
 @property(nonatomic, strong) ALAssetsLibrary *assetsLibrary;

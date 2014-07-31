@@ -384,9 +384,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     self.assetsGroupViewController.assetsGroup = assetsGroup;
     self.assetsGroupViewController.delegate = self;
 
-    for (NSURL *assetURL in self.selectedAssetURLs) {
-        [self.assetsGroupViewController selectAssetHavingURL:assetURL];
-    }
+    [self.assetsGroupViewController selectAssetsHavingURLs:self.selectedAssetURLs];
 
     [self.navigationController pushViewController:self.assetsGroupViewController animated:animated];
 }
@@ -416,9 +414,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)assetsGroupViewControllerDidReloadAssets:(NFTAssetsGroupViewController *)assetsGroupViewController {
-    for (NSURL *assetURL in self.selectedAssetURLs) {
-        [assetsGroupViewController selectAssetHavingURL:assetURL];
-    }
+    [self.assetsGroupViewController selectAssetsHavingURLs:self.selectedAssetURLs];
 }
 
 #pragma mark - Private Methods

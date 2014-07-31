@@ -266,16 +266,17 @@
 
 #pragma mark - Asset Selection
 
-- (void)selectAssetHavingURL:(NSURL *)URL {
+- (void)selectAssetsHavingURLs:(NSSet *)assetURLs {
     for (NSUInteger i = 0; i < self.assets.count; i++) {
         ALAsset *asset = [self.assets objectAtIndex:i];
         NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
 
-        if ([assetURL isEqual:URL]) {
+        if ([assetURLs containsObject:assetURL]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
             [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-
-            return;
+        } else {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
         }
     }
 }
