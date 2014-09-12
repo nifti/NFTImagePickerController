@@ -7,6 +7,7 @@
 
 #import "NFTImagePickerController.h"
 #import "NFTImagePickerGroupCell.h"
+#import "NFTPhotoAccessNotDeterminedView.h"
 #import "NFTPhotoAccessDeniedView.h"
 #import "NFTNoPhotosFoundCell.h"
 
@@ -45,6 +46,9 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 @property(nonatomic, strong) UICollectionView *collectionView;
 @property(nonatomic, strong) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
+@property(nonatomic, strong) NFTPhotoAccessNotDeterminedView *genericPhotoAccessNotDeterminedView;
+@property(nonatomic, strong) UIView *currentPhotoAccessNotDeterminedView;
+
 @property(nonatomic, strong) NFTPhotoAccessDeniedView *genericPhotoAccessDeniedView;
 @property(nonatomic, strong) UIView *currentPhotoAccessDeniedView;
 
@@ -54,6 +58,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 @property(nonatomic) NSInteger assetsGroupIndex;
 
+- (void)showNotDeterminedView;
+
 - (void)showDeniedView;
 
 - (void)hideDeniedView;
@@ -61,6 +67,9 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 - (void)selectedAssetURLsAddAsset:(ALAsset *)asset;
 
 - (void)selectedAssetURLsRemoveAsset:(ALAsset *)asset;
+
+- (void)notDeterminedTap;
+
 @end
 
 @implementation NFTImagePickerController
@@ -103,7 +112,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     self.collectionView.frame = self.view.bounds;
 
     if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusNotDetermined) {
-        [self showAskForPermissionDialog];
+        [self showNotDeterminedView];
     } else if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied) {
         [self showDeniedView];
     } else if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized) {
@@ -163,6 +172,20 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return _collectionViewFlowLayout;
 }
 
+- (NFTPhotoAccessNotDeterminedView *)genericPhotoAccessNotDeterminedView {
+    if (!_genericPhotoAccessNotDeterminedView) {
+        _genericPhotoAccessNotDeterminedView = [NFTPhotoAccessNotDeterminedView new];
+        _genericPhotoAccessNotDeterminedView.userInteractionEnabled = YES;
+
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc]
+                initWithTarget:self action:@selector(notDeterminedTap)];
+        gestureRecognizer.numberOfTapsRequired = 1;
+        [_genericPhotoAccessNotDeterminedView addGestureRecognizer:gestureRecognizer];
+    }
+
+    return _genericPhotoAccessNotDeterminedView;
+}
+
 - (NFTPhotoAccessDeniedView *)genericPhotoAccessDeniedView {
     if (!_genericPhotoAccessDeniedView) {
         _genericPhotoAccessDeniedView = [NFTPhotoAccessDeniedView new];
@@ -171,14 +194,28 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return _genericPhotoAccessDeniedView;
 }
 
+- (void)showNotDeterminedView {
+    [self.collectionView removeFromSuperview];
+
+    self.title = @"Permissions";
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:viewForCameraRollAccessNotDeterminedReusingView:)]) {
+        self.currentPhotoAccessNotDeterminedView = [self.delegate imagePickerController:self viewForCameraRollAccessNotDeterminedReusingView:self.currentPhotoAccessDeniedView];
+    } else {
+        self.currentPhotoAccessNotDeterminedView = self.genericPhotoAccessNotDeterminedView;
+    }
+
+    self.currentPhotoAccessNotDeterminedView.frame = self.view.bounds;
+    [self.view addSubview:self.currentPhotoAccessNotDeterminedView];
+}
 
 - (void)showDeniedView {
     [self.collectionView removeFromSuperview];
 
     self.title = @"Permissions";
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:viewForCameraRollAccesDeniedReusingView:)]) {
-        self.currentPhotoAccessDeniedView = [self.delegate imagePickerController:self viewForCameraRollAccesDeniedReusingView:self.currentPhotoAccessDeniedView];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:viewForCameraRollAccessDeniedReusingView:)]) {
+        self.currentPhotoAccessDeniedView = [self.delegate imagePickerController:self viewForCameraRollAccessDeniedReusingView:self.currentPhotoAccessDeniedView];
     } else {
         self.currentPhotoAccessDeniedView = self.genericPhotoAccessDeniedView;
     }
@@ -459,6 +496,10 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     [mset removeObject:assetURL];
 
     self.selectedAssetURLs = mset;
+}
+
+- (void)notDeterminedTap {
+    [self loadAssetsGroups];
 }
 
 @end
