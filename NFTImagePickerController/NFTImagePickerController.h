@@ -38,6 +38,8 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 @property(nonatomic, weak) id <NFTImagePickerControllerDelegate> delegate;
 @property(nonatomic, strong) NFTAssetsGroupViewController *assetsGroupViewController;
 
+@property(nonatomic, strong) UIImage *allowAccessPhoto;
+
 + (BOOL)isAuthorized;
 
 - (void)selectAsset:(ALAsset *)asset;

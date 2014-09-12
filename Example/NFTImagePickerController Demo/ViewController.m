@@ -21,6 +21,8 @@
     self.edgesForExtendedLayout=UIRectEdgeNone;
 
     [self.view addSubview:self.imagePickerButton];
+
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -57,6 +59,7 @@
 - (void)didTapImagePickerButton:(id)sender {
     NFTImagePickerController *ctrl = [[NFTImagePickerController alloc] init];
     ctrl.delegate = self;
+    ctrl.allowAccessPhoto = [UIImage imageNamed:@"allow-access-photo"];
 
     [self.navigationController pushViewController:ctrl animated:YES];
 }

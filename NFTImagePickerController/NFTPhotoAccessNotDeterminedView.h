@@ -11,4 +11,6 @@
 
 @interface NFTPhotoAccessNotDeterminedView : UIView
 
+- (void)setAllowAccessPhoto:(UIImage *)photo;
+
 @end

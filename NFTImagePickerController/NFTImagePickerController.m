@@ -177,6 +177,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         _genericPhotoAccessNotDeterminedView = [NFTPhotoAccessNotDeterminedView new];
         _genericPhotoAccessNotDeterminedView.userInteractionEnabled = YES;
 
+        [_genericPhotoAccessNotDeterminedView setAllowAccessPhoto:self.allowAccessPhoto];
+
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc]
                 initWithTarget:self action:@selector(notDeterminedTap)];
         gestureRecognizer.numberOfTapsRequired = 1;

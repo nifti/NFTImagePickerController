@@ -48,7 +48,7 @@
 
 - (UIImageView *)imageView {
     if (!_imageView) {
-        _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photo-icon"]];
+        _imageView = [[UIImageView alloc] init];
         _imageView.clipsToBounds = YES;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
@@ -63,7 +63,7 @@
 
     CGFloat windowWidth = CGRectGetWidth(self.bounds);
     CGFloat w = windowWidth - 40, h = 80;
-    CGFloat x = windowWidth / 2 - w / 2, y = 64;
+    CGFloat x = windowWidth / 2 - w / 2, y = 20;
 
     self.titleView.frame = CGRectMake(x, y, w, h);
 
@@ -73,6 +73,12 @@
     x = windowWidth / 2 - w / 2;
 
     self.imageView.frame = CGRectMake(x, y, w, h);
+}
+
+#pragma mark - Public methods
+
+- (void)setAllowAccessPhoto:(UIImage *)photo {
+    self.imageView.image = photo;
 }
 
 @end
