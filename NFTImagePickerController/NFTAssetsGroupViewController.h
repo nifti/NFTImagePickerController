@@ -14,6 +14,8 @@
 @optional
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSelectAsset:(ALAsset *)asset;
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didDeselectAsset:(ALAsset *)asset;
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSwipeLeft:(UISwipeGestureRecognizer *)gestureRecognizer;
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSwipeRight:(UISwipeGestureRecognizer *)gestureRecognizer;
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(ALAsset *)asset inView:(UIView *)cell;
 - (void)assetsGroupViewControllerDidReloadAssets:(NFTAssetsGroupViewController *)assetsGroupViewController;
 
