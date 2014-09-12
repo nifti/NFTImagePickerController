@@ -13,6 +13,10 @@
 
 - (void)reloadAssets;
 
+- (void)swipeLeft:(UISwipeGestureRecognizer *)gestureRecognizer;
+
+- (void)swipeRight:(UISwipeGestureRecognizer *)gestureRecognizer;
+
 @end
 
 @implementation NFTAssetsGroupViewController
@@ -37,6 +41,14 @@
         longPressGestureRecognizer.minimumPressDuration = .3; //seconds
         longPressGestureRecognizer.delaysTouchesBegan = YES;
         [self.collectionView addGestureRecognizer:longPressGestureRecognizer];
+
+        UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+        swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.collectionView addGestureRecognizer:swipeLeft];
+
+        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
+        swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.collectionView addGestureRecognizer:swipeRight];
     }
 
     return self;
@@ -295,6 +307,20 @@
                 [self.delegate assetsGroupViewController:self didLongTouch:asset inView:cell];
             }
         }
+    }
+}
+
+#pragma mark - Private methods
+
+- (void)swipeLeft:(UISwipeGestureRecognizer *)gestureRecognizer {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didSwipeLeft:)]) {
+        [self.delegate assetsGroupViewController:self didSwipeLeft:gestureRecognizer];
+    }
+}
+
+- (void)swipeRight:(UISwipeGestureRecognizer *)gestureRecognizer {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didSwipeLeft:)]) {
+        [self.delegate assetsGroupViewController:self didSwipeRight:gestureRecognizer];
     }
 }
 

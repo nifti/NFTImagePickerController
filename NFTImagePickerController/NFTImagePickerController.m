@@ -52,6 +52,8 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 @property(nonatomic, assign) BOOL viewDidAppear;
 @property(nonatomic, strong, readwrite) NSSet *selectedAssetURLs;
 
+@property(nonatomic) NSInteger assetsGroupIndex;
+
 - (void)showDeniedView;
 
 - (void)hideDeniedView;
@@ -118,7 +120,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     ALAssetsGroup *assetsGroup = [self.assetsGroups firstObject];
     if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized && self.firstLoad && assetsGroup) {
         self.firstLoad = NO;
-        [self displayAssetGroupViewController:assetsGroup animated:NO];
+        [self displayAssetGroupViewController:assetsGroup animated:NO push:YES];
     }
 }
 
@@ -221,7 +223,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
             ALAssetsGroup *assetsGroup = [assetsGroups firstObject];
             self.firstLoad = NO;
             if (assetsGroup) {
-                [self displayAssetGroupViewController:assetsGroup animated:NO];
+                [self displayAssetGroupViewController:assetsGroup animated:NO push:YES];
             } else {
                 [self.collectionView reloadData];
             }
@@ -368,10 +370,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) indexPath.row];
-    [self displayAssetGroupViewController:assetsGroup animated:YES];
+    [self displayAssetGroupViewController:assetsGroup animated:YES push:YES];
 }
 
-- (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated {
+- (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated push:(BOOL)push {
+    self.assetsGroupIndex = [self.assetsGroups indexOfObject:assetsGroup];
+
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     layout.minimumLineSpacing = itemSpacing;
@@ -386,7 +390,11 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     [self.assetsGroupViewController selectAssetsHavingURLs:self.selectedAssetURLs];
 
-    [self.navigationController pushViewController:self.assetsGroupViewController animated:animated];
+    if (push) {
+        [self.navigationController pushViewController:self.assetsGroupViewController animated:animated];
+    } else {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
 }
 
 #pragma mark - NFTAssetsGroupViewControllerDelegate
@@ -404,6 +412,22 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:didDeselectAsset:)]) {
         [self.delegate imagePickerController:self didDeselectAsset:asset];
+    }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSwipeLeft:(UISwipeGestureRecognizer *)gestureRecognizer {
+    NSInteger newIndex = self.assetsGroupIndex + 1;
+    if (newIndex <= self.assetsGroups.count - 1) {
+        ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) newIndex];
+        [self displayAssetGroupViewController:assetsGroup animated:YES push:YES];
+    }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSwipeRight:(UISwipeGestureRecognizer *)gestureRecognizer {
+    NSInteger newIndex = self.assetsGroupIndex - 1;
+    if (newIndex >= 0) {
+        ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) newIndex];
+        [self displayAssetGroupViewController:assetsGroup animated:YES push:NO];
     }
 }
 
