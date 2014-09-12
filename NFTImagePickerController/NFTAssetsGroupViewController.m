@@ -59,6 +59,14 @@
     self.view.backgroundColor = [UIColor colorWithRed:242.0f / 255.0f green:242.0f / 255.0f blue:242.0f / 255.0f alpha:1];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didAppear:)]) {
+        [self.delegate assetsGroupViewController:self didAppear:self.assetsGroup];
+    }
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:ALAssetsLibraryChangedNotification object:nil];

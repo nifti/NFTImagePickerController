@@ -374,8 +374,6 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)displayAssetGroupViewController:(ALAssetsGroup *)assetsGroup animated:(BOOL)animated push:(BOOL)push {
-    self.assetsGroupIndex = [self.assetsGroups indexOfObject:assetsGroup];
-
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     layout.minimumLineSpacing = itemSpacing;
@@ -429,6 +427,10 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
         ALAssetsGroup *assetsGroup = self.assetsGroups[(NSUInteger) newIndex];
         [self displayAssetGroupViewController:assetsGroup animated:YES push:NO];
     }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didAppear:(ALAssetsGroup *)assetsGroup {
+    self.assetsGroupIndex = [self.assetsGroups indexOfObject:assetsGroup];
 }
 
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(ALAsset *)asset inView:(UIView *)cell {
