@@ -6,7 +6,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = "NFTImagePickerController"
-  s.version          = "0.2.1"
+  s.version          = "0.2.2"
   s.summary          = "A UIImagePickerController with multiple selection support."
   s.homepage         = "https://github.com/nifti/NFTImagePickerController"
   #s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
