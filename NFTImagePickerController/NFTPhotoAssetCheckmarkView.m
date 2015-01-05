@@ -11,7 +11,6 @@
     self = [super initWithFrame:frame];
 
     if (self) {
-        // View settings
         self.backgroundColor = [UIColor clearColor];
     }
 
@@ -30,7 +29,7 @@
 //    CGContextFillEllipseInRect(context, self.bounds);
 
     // Body
-    CGContextSetRGBFillColor(context, 57 / 255.0, 187 / 255.0, 181 / 255.0, 1.0);
+    CGContextSetRGBFillColor(context, 57 / 255.0f, 187 / 255.0f, 181 / 255.0f, 1.0);
     CGContextFillEllipseInRect(context, CGRectInset(self.bounds, 1.0, 1.0));
 
     // Checkmark

@@ -6,6 +6,7 @@
 #import "NFTPhotoAssetCell.h"
 #import "NFTNoPhotosFoundCell.h"
 
+
 @interface NFTAssetsGroupViewController ()
 
 @property(nonatomic, strong) NSArray *assets;
@@ -224,7 +225,7 @@
     } else {
         NFTPhotoAssetCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([NFTPhotoAssetCell class]) forIndexPath:indexPath];
 
-        ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+        ALAsset *asset = self.assets[(NSUInteger) indexPath.row];
 
         [cell updateWithAsset:asset];
 
@@ -235,13 +236,14 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(104, 104);
+    CGFloat width = CGRectGetWidth(self.view.bounds) / 3 - 1.4f;
+    return CGSizeMake(width, width);
 }
 
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+    ALAsset *asset = self.assets[(NSUInteger) indexPath.row];
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didSelectAsset:)]) {
         [self.delegate assetsGroupViewController:self didSelectAsset:asset];
@@ -249,7 +251,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+    ALAsset *asset = self.assets[(NSUInteger) indexPath.row];
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didDeselectAsset:)]) {
         [self.delegate assetsGroupViewController:self didDeselectAsset:asset];
@@ -258,7 +260,7 @@
 
 - (void)selectAsset:(ALAsset *)asset {
     for (NSUInteger i = 0; i < self.assets.count; i++) {
-        NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
+        NSURL *aURL = [self.assets[i] valueForProperty:ALAssetPropertyAssetURL];
 
         if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
@@ -269,7 +271,7 @@
 
 - (void)deselectAsset:(ALAsset *)asset {
     for (NSUInteger i = 0; i < self.assets.count; i++) {
-        NSURL *aURL = [[self.assets objectAtIndex:i] valueForProperty:ALAssetPropertyAssetURL];
+        NSURL *aURL = [self.assets[i] valueForProperty:ALAssetPropertyAssetURL];
 
         if ([aURL isEqual:[asset valueForProperty:ALAssetPropertyAssetURL]]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
@@ -288,7 +290,7 @@
 
 - (void)selectAssetsHavingURLs:(NSSet *)assetURLs {
     for (NSUInteger i = 0; i < self.assets.count; i++) {
-        ALAsset *asset = [self.assets objectAtIndex:i];
+        ALAsset *asset = self.assets[i];
         NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
 
         if ([assetURLs containsObject:assetURL]) {
@@ -308,7 +310,7 @@
         CGPoint p = [gestureRecognizer locationInView:self.collectionView];
         NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
         if (indexPath) {
-            ALAsset *asset = [self.assets objectAtIndex:(NSUInteger) indexPath.row];
+            ALAsset *asset = self.assets[(NSUInteger) indexPath.row];
             NFTPhotoAssetCell *cell = (NFTPhotoAssetCell *) [self.collectionView cellForItemAtIndexPath:indexPath];
 
             if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:didLongTouch:inView:)]) {

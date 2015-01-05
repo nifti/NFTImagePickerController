@@ -28,9 +28,9 @@
 
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
-        _titleLabel = [UILabel new];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.textColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:1];
+        _titleLabel.textColor = [UIColor colorWithRed:137 / 255.0f green:153 / 255.0f blue:167 / 255.0f alpha:1];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.font = [_titleLabel.font fontWithSize:22];
         _titleLabel.text = @"No Photos";
@@ -41,9 +41,9 @@
 
 - (UILabel *)detailsLabel {
     if (!_detailsLabel) {
-        _detailsLabel = [UILabel new];
+        _detailsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _detailsLabel.backgroundColor = [UIColor clearColor];
-        _detailsLabel.textColor = [UIColor colorWithRed:137 / 255.0 green:153 / 255.0 blue:167 / 255.0 alpha:1];
+        _detailsLabel.textColor = [UIColor colorWithRed:137 / 255.0f green:153 / 255.0f blue:167 / 255.0f alpha:1];
         _detailsLabel.textAlignment = NSTextAlignmentCenter;
         _detailsLabel.font = [_detailsLabel.font fontWithSize:16];
         _detailsLabel.text = @"You can sync photos\nonto your device using iTunes.";

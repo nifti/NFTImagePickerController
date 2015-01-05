@@ -6,6 +6,9 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+
 @interface NFTPhotoAssetCell : UICollectionViewCell
+
 - (void)updateWithAsset:(ALAsset *)asset;
+
 @end

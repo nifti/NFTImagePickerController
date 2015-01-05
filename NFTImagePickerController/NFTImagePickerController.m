@@ -10,21 +10,19 @@
 #import "NFTPhotoAccessDeniedView.h"
 #import "NFTNoPhotosFoundCell.h"
 
-static const int itemSpacing = 4;
+
+static const int itemSpacing = 2;
 
 ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePickerControllerFilterType type) {
     switch (type) {
         case NFTImagePickerControllerFilterTypeNone:
             return [ALAssetsFilter allAssets];
-            break;
 
         case NFTImagePickerControllerFilterTypePhotos:
             return [ALAssetsFilter allPhotos];
-            break;
 
         case NFTImagePickerControllerFilterTypeVideos:
             return [ALAssetsFilter allVideos];
-            break;
 
         default:
             return [ALAssetsFilter allAssets];
@@ -61,11 +59,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 - (void)selectedAssetURLsAddAsset:(ALAsset *)asset;
 
 - (void)selectedAssetURLsRemoveAsset:(ALAsset *)asset;
+
 @end
 
 @implementation NFTImagePickerController
 
-+ (BOOL)isAuthorized {
++ (BOOL)isAuthorized __unused {
     return [ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized;
 }
 
@@ -124,15 +123,9 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     }
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark - Lazy init
 
 - (UICollectionView *)collectionView {
-
     if (!_collectionView) {
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame
                                              collectionViewLayout:self.collectionViewFlowLayout];
@@ -152,12 +145,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (UICollectionViewFlowLayout *)collectionViewFlowLayout {
-    if (_collectionViewFlowLayout == nil) {
+    if (!_collectionViewFlowLayout) {
         _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
         _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         _collectionViewFlowLayout.minimumLineSpacing = 1;
         _collectionViewFlowLayout.minimumInteritemSpacing = 0;
-//        _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0);
+        _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
 
     return _collectionViewFlowLayout;
@@ -170,7 +163,6 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 
     return _genericPhotoAccessDeniedView;
 }
-
 
 - (void)showDeniedView {
     [self.collectionView removeFromSuperview];
@@ -187,12 +179,12 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     [self.view addSubview:self.currentPhotoAccessDeniedView];
 }
 
-- (void)hideDeniedView {
+- (void)hideDeniedView __unused {
     [self.currentPhotoAccessDeniedView removeFromSuperview];
     self.title = @"Albums";
 }
 
-- (void)showAskForPermissionDialog {
+- (void)showAskForPermissionDialog __unused {
     NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Let %@ Access Photos?", appName]
@@ -208,8 +200,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [self showDeniedView];
-    }
-    else if (buttonIndex == 1) {
+    } else if (buttonIndex == 1) {
         [self loadAssetsGroups];
     }
 }
@@ -294,7 +285,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
                 break;
             }
 
-            ALAssetsGroup *sortedAssetsGroup = [sortedAssetsGroups objectAtIndex:i];
+            ALAssetsGroup *sortedAssetsGroup = sortedAssetsGroups[i];
             ALAssetsGroupType sortedAssetsGroupType = [[sortedAssetsGroup valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue];
             NSUInteger indexOfSortedAssetsGroupType = [typesOrder indexOfObject:@(sortedAssetsGroupType)];
 
@@ -308,7 +299,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     return [sortedAssetsGroups copy];
 }
 
-- (void)selectAsset:(ALAsset *)asset {
+- (void)selectAsset:(ALAsset *)asset __unused {
     [self selectedAssetURLsAddAsset:asset];
 
     if (self.assetsGroupViewController) {
@@ -316,7 +307,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     }
 }
 
-- (void)deselectAsset:(ALAsset *)asset {
+- (void)deselectAsset:(ALAsset *)asset __unused {
     [self selectedAssetURLsRemoveAsset:asset];
 
     if (self.assetsGroupViewController) {

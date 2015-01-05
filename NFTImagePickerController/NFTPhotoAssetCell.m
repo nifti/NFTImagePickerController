@@ -53,7 +53,7 @@
     if (selected) {
         [self showCheckmarkView];
         self.layer.borderWidth = 2.0;
-        self.layer.borderColor = [UIColor colorWithRed:57 / 255.0 green:187 / 255.0 blue:181 / 255.0 alpha:1].CGColor;
+        self.layer.borderColor = [UIColor colorWithRed:57 / 255.0f green:187 / 255.0f blue:181 / 255.0f alpha:1].CGColor;
     } else {
         [self hideCheckmarkView];
         self.layer.borderWidth = 0;

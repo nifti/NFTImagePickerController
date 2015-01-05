@@ -7,22 +7,21 @@
 
 #import "NFTImagePickerGroupCell.h"
 
+
 @interface NFTImagePickerGroupCell()
 
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *countLabel;
-@property(nonatomic, strong) UIImageView *thumbnailImageView;
+@property (nonatomic, strong) UIImageView *thumbnailImageView;
 
 @end
 
 @implementation NFTImagePickerGroupCell
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        self.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+        self.backgroundColor = [UIColor colorWithRed:242 / 255.0f green:242 / 255.0f blue:242 / 255.0f alpha:1];
         
         [self.contentView addSubview:self.thumbnailImageView];
         [self.contentView addSubview:self.nameLabel];
@@ -31,22 +30,13 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 #pragma mark - Lazy initialization
 
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
-        _nameLabel = [UILabel new];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _nameLabel.backgroundColor = [UIColor clearColor];
-        _nameLabel.textColor = [UIColor colorWithRed:137/255.0 green:153/255.0 blue:167/255.0 alpha:1];
+        _nameLabel.textColor = [UIColor colorWithRed:137 / 255.0f green:153 / 255.0f blue:167 / 255.0f alpha:1];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         _nameLabel.font = [_nameLabel.font fontWithSize:14];
     }
@@ -56,9 +46,9 @@
 
 - (UILabel *)countLabel {
     if (!_countLabel) {
-        _countLabel = [UILabel new];
+        _countLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _countLabel.backgroundColor = [UIColor clearColor];
-        _countLabel.textColor = [UIColor colorWithRed:137/255.0 green:153/255.0 blue:167/255.0 alpha:1];
+        _countLabel.textColor = [UIColor colorWithRed:137 / 255.0f green:153 / 255.0f blue:167 / 255.0f alpha:1];
         _countLabel.textAlignment = NSTextAlignmentRight;
         _countLabel.font = [_countLabel.font fontWithSize:12];
     }
@@ -68,18 +58,14 @@
 
 - (UIImageView *)thumbnailImageView {
     if (!_thumbnailImageView) {
-        _thumbnailImageView = [UIImageView new];
+        _thumbnailImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         _thumbnailImageView.contentMode = UIViewContentModeScaleAspectFill;
         _thumbnailImageView.clipsToBounds = YES;
     }
     return _thumbnailImageView;
 }
 
-- (void)updateAssetsGroup:(ALAssetsGroup *)assetsGroup
-{
-    // Update thumbnail view
-//    self.thumbnailView.assetsGroup = self.assetsGroup;
-    
+- (void)updateAssetsGroup:(ALAssetsGroup *)assetsGroup {
     // Update label
     self.nameLabel.text = [assetsGroup valueForProperty:ALAssetsGroupPropertyName];
     self.countLabel.text = [NSString stringWithFormat:@"%ld", (long)assetsGroup.numberOfAssets];
