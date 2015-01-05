@@ -32,10 +32,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2746EF6CBF57EBD2C96084C4 /* Pods-NFTImagePickerController Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NFTImagePickerController Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-NFTImagePickerController Demo/Pods-NFTImagePickerController Demo.release.xcconfig"; sourceTree = "<group>"; };
 		2FF685DAF0393BFE3A3EF4F2 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		2FF6889C756ADF552EE3851E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		7C5456160E494955A8E89459 /* libPods-NFTImagePickerController Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NFTImagePickerController Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		99533E6AF9704BA7BFC57607 /* Pods-NFTImagePickerController Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NFTImagePickerController Demo.xcconfig"; path = "Pods/Pods-NFTImagePickerController Demo.xcconfig"; sourceTree = "<group>"; };
 		C498863B195243A6000E2805 /* NFTImagePickerController Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NFTImagePickerController Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C498863E195243A6000E2805 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C4988640195243A6000E2805 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -49,6 +49,7 @@
 		C4988657195243A7000E2805 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C4E856A21954DF0F00A588F9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C4E856A31954DF0F00A588F9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E59B9E31CCF1325BD9483585 /* Pods-NFTImagePickerController Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NFTImagePickerController Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NFTImagePickerController Demo/Pods-NFTImagePickerController Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,13 +77,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		19038F117ED90EA87ADACD45 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E59B9E31CCF1325BD9483585 /* Pods-NFTImagePickerController Demo.debug.xcconfig */,
+				2746EF6CBF57EBD2C96084C4 /* Pods-NFTImagePickerController Demo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C4988632195243A6000E2805 = {
 			isa = PBXGroup;
 			children = (
 				C4988644195243A6000E2805 /* NFTImagePickerController Demo */,
 				C498863D195243A6000E2805 /* Frameworks */,
 				C498863C195243A6000E2805 /* Products */,
-				99533E6AF9704BA7BFC57607 /* Pods-NFTImagePickerController Demo.xcconfig */,
+				19038F117ED90EA87ADACD45 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -251,7 +261,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-NFTImagePickerController Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NFTImagePickerController Demo/Pods-NFTImagePickerController Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -368,7 +378,7 @@
 		};
 		C4988668195243A7000E2805 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99533E6AF9704BA7BFC57607 /* Pods-NFTImagePickerController Demo.xcconfig */;
+			baseConfigurationReference = E59B9E31CCF1325BD9483585 /* Pods-NFTImagePickerController Demo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -382,7 +392,7 @@
 		};
 		C4988669195243A7000E2805 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99533E6AF9704BA7BFC57607 /* Pods-NFTImagePickerController Demo.xcconfig */;
+			baseConfigurationReference = 2746EF6CBF57EBD2C96084C4 /* Pods-NFTImagePickerController Demo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
