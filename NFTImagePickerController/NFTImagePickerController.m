@@ -441,7 +441,7 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
 }
 
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:scrollViewWillBeginDragging:willDecelerate:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:scrollViewDidEndDragging:willDecelerate:)]) {
         [self.delegate imagePickerController:self scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     }
 }
