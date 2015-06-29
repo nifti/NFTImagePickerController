@@ -434,6 +434,24 @@ ALAssetsFilter *ALAssetsFilterFromNFTImagePickerControllerFilterType(NFTImagePic
     [self.assetsGroupViewController selectAssetsHavingURLs:self.selectedAssetURLs];
 }
 
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:scrollViewWillBeginDragging:)]) {
+        [self.delegate imagePickerController:self scrollViewWillBeginDragging:scrollView];
+    }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:scrollViewWillBeginDragging:willDecelerate:)]) {
+        [self.delegate imagePickerController:self scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    }
+}
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(imagePickerController:scrollViewDidScroll:)]) {
+        [self.delegate imagePickerController:self scrollViewDidScroll:scrollView];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)selectedAssetURLsAddAsset:(ALAsset *)asset {

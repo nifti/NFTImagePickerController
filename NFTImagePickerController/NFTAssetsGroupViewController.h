@@ -18,6 +18,11 @@
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didSwipeRight:(UISwipeGestureRecognizer *)gestureRecognizer;
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didAppear:(ALAssetsGroup *)assetsGroup;
 - (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController didLongTouch:(ALAsset *)asset inView:(UIView *)cell;
+
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+- (void)assetsGroupViewController:(NFTAssetsGroupViewController *)assetsGroupViewController scrollViewDidEndDragging:(UIScrollView *)scrollView  willDecelerate:(BOOL)decelerate;
+
 - (void)assetsGroupViewControllerDidReloadAssets:(NFTAssetsGroupViewController *)assetsGroupViewController;
 
 @end

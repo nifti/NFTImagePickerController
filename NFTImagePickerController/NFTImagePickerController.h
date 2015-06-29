@@ -27,6 +27,10 @@ typedef NS_ENUM(NSUInteger, NFTImagePickerControllerFilterType) {
 - (void)imagePickerController:(NFTImagePickerController *)imagePickerController didLongTouch:(ALAsset *)asset inView:(UIView *)view;
 - (UIView *)imagePickerController:(NFTImagePickerController *)imagePickerController viewForCameraRollAccesDeniedReusingView:(UIView *)view;
 
+- (void)imagePickerController:(NFTImagePickerController *)imagePickerController scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void)imagePickerController:(NFTImagePickerController *)imagePickerController scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+- (void)imagePickerController:(NFTImagePickerController *)imagePickerController scrollViewDidEndDragging:(UIScrollView *)scrollView  willDecelerate:(BOOL)decelerate;
+
 @end
 
 @interface NFTImagePickerController : UIViewController

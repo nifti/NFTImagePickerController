@@ -269,6 +269,26 @@
     }
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:scrollViewWillBeginDragging:)]) {
+        [self.delegate assetsGroupViewController:self scrollViewWillBeginDragging:scrollView];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:scrollViewDidEndDragging:willDecelerate:)]) {
+        [self.delegate assetsGroupViewController:self scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(assetsGroupViewController:scrollViewDidScroll:)]) {
+        [self.delegate assetsGroupViewController:self scrollViewDidScroll:scrollView];
+    }
+}
+
 - (void)deselectAsset:(ALAsset *)asset {
     for (NSUInteger i = 0; i < self.assets.count; i++) {
         NSURL *aURL = [self.assets[i] valueForProperty:ALAssetPropertyAssetURL];
